@@ -8,8 +8,14 @@ namespace YohohoChobotov.Game.Player
     {
         [SerializeField] private float speed = .1f;
         [SerializeField] private float rotationSpeed = 1f;
+        [Space]
+        [SerializeField] private Animator animator;
 
         private Rigidbody rigidbody;
+        private float velocity = 0;
+
+        public Animator Animator => animator;
+        public float Velocity => velocity;
 
         private void Awake()
         {
@@ -33,6 +39,11 @@ namespace YohohoChobotov.Game.Player
                 var targetRotation = Quaternion.LookRotation(new Vector3(direction.x, transform.position.y, direction.y));
                 rigidbody.rotation = Quaternion.Slerp(rigidbody.rotation, targetRotation, Time.fixedDeltaTime * rotationSpeed);
             }
+        }
+
+        public void AddDeltaVelocity(float velocity)
+        {
+            this.velocity += velocity;
         }
     }
 }

@@ -38,7 +38,10 @@ namespace YohohoChobotov.App
             update = new EcsSystems(world);
 
             update
+                .Add(new PlayerVelocitySystem())
+                .Add(new PlayerAnimatorSystem())
 
+                .Inject(gameLogic.PlayerFactory)
                 .Inject(world)
 
                 .Init();

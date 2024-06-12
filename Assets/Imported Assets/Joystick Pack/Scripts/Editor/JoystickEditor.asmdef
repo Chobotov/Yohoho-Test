@@ -1,11 +1,13 @@
 {
-    "name": "YohohoEditor",
+    "name": "JoystickEditor",
     "rootNamespace": "",
     "references": [
-        "GUID:fdabd51f24c4340468fd293eb9db8a57"
+        "GUID:336f13d3462e39748908257884a31b4d"
     ],
     "includePlatforms": [],
-    "excludePlatforms": [],
+    "excludePlatforms": [
+        "Android"
+    ],
     "allowUnsafeCode": false,
     "overrideReferences": false,
     "precompiledReferences": [],
