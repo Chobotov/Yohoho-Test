@@ -1,5 +1,4 @@
 ﻿using UniRx;
-using YohohoChobotov.Game.Items;
 
 namespace YohohoChobotov.Services
 {
@@ -7,11 +6,11 @@ namespace YohohoChobotov.Services
     {
         private const int MaxCount = 3;
 
-        private readonly ReactiveCollection<ItemController> items = new();
+        private readonly ReactiveCollection<ItemInfo> items = new();
 
-        public IReadOnlyReactiveCollection<ItemController> Items => items;
+        public IReadOnlyReactiveCollection<ItemInfo> Items => items;
 
-        public void Add(ItemController item)
+        public void Add(ItemInfo item)
         {
             if (items.Count >= MaxCount)
             {

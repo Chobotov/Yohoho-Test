@@ -22,7 +22,7 @@ namespace YohohoChobotov.Game.Stack
 
         private void Add(ItemController item)
         {
-            stackService.Add(item);
+            stackService.Add(item.Info);
 
             if (items.Count >= stackService.GetMaxCount())
             {

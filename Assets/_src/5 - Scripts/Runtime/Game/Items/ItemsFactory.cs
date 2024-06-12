@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using VContainer;
 using YohohoChobotov.Configs.Items;
+using YohohoChobotov.Services;
 using YohohoChobotov.Utills;
 
 namespace YohohoChobotov.Game.Items
@@ -18,8 +19,9 @@ namespace YohohoChobotov.Game.Items
         public void CreateRandomItem(Vector3 position)
         {
             var itemPrefab = config.Items.GetRandomItem();
+            var item = Instantiate(itemPrefab, position, Quaternion.identity, transform);
 
-            Instantiate(itemPrefab, position, Quaternion.identity, transform);
+            item.Init(new ItemInfo());
         }
     }
 }

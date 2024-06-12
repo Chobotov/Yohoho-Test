@@ -1,13 +1,12 @@
 ﻿using UniRx;
-using YohohoChobotov.Game.Items;
 
 namespace YohohoChobotov.Services
 {
     public interface IStackService
     {
-        IReadOnlyReactiveCollection<ItemController> Items { get; }
+        IReadOnlyReactiveCollection<ItemInfo> Items { get; }
 
-        void Add(ItemController item);
+        void Add(ItemInfo item);
         void RemoveLast(int count);
         void Clear();
 
