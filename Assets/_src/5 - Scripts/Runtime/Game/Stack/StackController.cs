@@ -1,29 +1,30 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using VContainer;
-using YohohoChobotov.App;
 using YohohoChobotov.Game.Items;
+using YohohoChobotov.Services;
 
 namespace YohohoChobotov.Game.Stack
 {
     public class StackController : MonoBehaviour
     {
-        private const int MaxCount = 5;
+        private readonly List<ItemController> items = new ();
 
-        private List<ItemController> items = new ();
-        private EcsStartup ecs;
+        private IStackService stackService;
 
         public int Count => items.Count;
 
         [Inject]
-        public void Inject(EcsStartup ecs)
+        public void Inject(IStackService stackService)
         {
-            this.ecs = ecs;
+            this.stackService = stackService;
         }
-        
+
         private void Add(ItemController item)
         {
-            if (items.Count >= MaxCount)
+            stackService.Add(item);
+
+            if (items.Count >= stackService.GetMaxCount())
             {
                 return;
             }
@@ -38,6 +39,8 @@ namespace YohohoChobotov.Game.Stack
 
         private void RemoveLast()
         {
+            stackService.RemoveLast(count: 1);
+
             var item = items[^1];
 
             items.Remove(item);
@@ -51,6 +54,8 @@ namespace YohohoChobotov.Game.Stack
             {
                 RemoveLast();
             }
+
+            stackService.Clear();
         }
 
         private void OnTriggerEnter(Collider other)

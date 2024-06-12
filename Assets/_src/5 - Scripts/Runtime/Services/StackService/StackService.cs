@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using UniRx;
-using UnityEngine;
+﻿using UniRx;
 using YohohoChobotov.Game.Items;
 
 namespace YohohoChobotov.Services
@@ -9,7 +7,7 @@ namespace YohohoChobotov.Services
     {
         private const int MaxCount = 3;
 
-        private ReactiveCollection<ItemController> items = new();
+        private readonly ReactiveCollection<ItemController> items = new();
 
         public IReadOnlyReactiveCollection<ItemController> Items => items;
 
@@ -30,8 +28,6 @@ namespace YohohoChobotov.Services
                 var item = items[^1];
 
                 items.Remove(item);
-
-                Object.Destroy(item.gameObject);
             }
         }
 
