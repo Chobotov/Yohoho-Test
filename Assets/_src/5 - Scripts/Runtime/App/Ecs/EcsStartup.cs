@@ -1,6 +1,8 @@
 ﻿using System;
 using Leopotam.Ecs;
 using VContainer.Unity;
+using YohohoChobotov.Ecs.Systems;
+using YohohoChobotov.Game;
 
 namespace YohohoChobotov.App
 {
@@ -12,8 +14,18 @@ namespace YohohoChobotov.App
         private EcsSystems fixedUpdate;
         private EcsSystems lateUpdate;
 
-        public EcsStartup()
+        private readonly GameLogic gameLogic;
+        private readonly FixedJoystick joystick;
+
+        public EcsWorld World => world;
+
+        public EcsStartup(
+            GameLogic gameLogic,
+            FixedJoystick joystick)
         {
+            this.gameLogic = gameLogic;
+            this.joystick = joystick;
+            
             world = new EcsWorld();
 
             InitUpdateEcs();
@@ -25,21 +37,37 @@ namespace YohohoChobotov.App
         {
             update = new EcsSystems(world);
 
-            update.Init();
+            update
+
+                .Inject(world)
+
+                .Init();
         }
 
         private void InitFixedUpdateEcs()
         {
             fixedUpdate = new EcsSystems(world);
 
-            fixedUpdate.Init();
+            fixedUpdate
+                .Add(new InputSystem())
+                .Add(new RotationSystem())
+                .Add(new MoveSystem())
+
+                .Inject(gameLogic.PlayerFactory)
+                .Inject(world)
+                .Inject(joystick)
+
+                .Init();
         }
 
         private void InitLateUpdateEcs()
         {
             lateUpdate = new EcsSystems(world);
 
-            lateUpdate.Init();
+            lateUpdate
+                .Add(new InputClearSystem())
+
+                .Init();
         }
 
         public void Tick()

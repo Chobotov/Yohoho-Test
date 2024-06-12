@@ -11,7 +11,7 @@ namespace YohohoChobotov.App
     /// </summary>
     public sealed class AppController : MonoBehaviour, IAppController
     {
-        [SerializeField] private GameLifetimeScope gameScope;
+        [SerializeField] private AppLifetimeScope gameScope;
 
         private void Awake()
         {

@@ -7,37 +7,16 @@ namespace YohohoChobotov.App
 {
     public class GameLifetimeScope : LifetimeScope
     {
-        [SerializeField] private List<ScriptableObject> configs = new();
         [SerializeField] private List<MonoBehaviour> controllers = new();
 
         protected override void Configure(IContainerBuilder builder)
         {
-            Debug.Log($"System : Start Configure");
-
-            RegisterConfigs(builder);
             RegisterControllers(builder);
-            RegisterServices(builder);
-
-            Debug.Log($"System : End Configure");
-        }
-
-        private void RegisterConfigs(IContainerBuilder builder)
-        {
-            Debug.Log($"System : Start Register Configs");
-
-            foreach (var config in configs)
-            {
-                Debug.Log($"Register : {config.name}");
-
-                builder.RegisterComponent(config).AsSelf();
-            }
-
-            Debug.Log($"System : End Register Configs");
         }
 
         private void RegisterControllers(IContainerBuilder builder)
         {
-            Debug.Log($"System : Start Register Controllers");
+            Debug.Log($"Game : Start Register Controllers");
 
             foreach (var controller in controllers) 
             {
@@ -46,22 +25,9 @@ namespace YohohoChobotov.App
                 builder.RegisterInstance(controller).AsSelf();
             }
 
-            builder.RegisterEntryPoint<EcsStartup>();
+            builder.RegisterEntryPoint<EcsStartup>().AsSelf();
 
-            Debug.Log($"System : End Register Controllers");
-        }
-
-        private void RegisterServices(IContainerBuilder builder)
-        {
-            /*Debug.Log($"System : Start Register Services");
-
-            Debug.Log($"System : Register {nameof(RouterService)}");
-            builder.Register<IRouterService, RouterService>(Lifetime.Singleton);
-
-            Debug.Log($"System : Register {nameof(LevelService)}");
-            builder.Register<ILevelService, LevelService>(Lifetime.Singleton);
-
-            Debug.Log($"System : End Register Services");*/
+            Debug.Log($"Game : End Register Controllers");
         }
     }
 }
