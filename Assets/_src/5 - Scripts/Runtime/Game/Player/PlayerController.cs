@@ -1,5 +1,5 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
+using YohohoChobotov.Game.Stack;
 
 namespace YohohoChobotov.Game.Player
 {
@@ -9,22 +9,19 @@ namespace YohohoChobotov.Game.Player
         [SerializeField] private float speed = .1f;
         [SerializeField] private float rotationSpeed = 1f;
         [Space]
+        [SerializeField] private StackController stackController;
         [SerializeField] private Animator animator;
 
         private Rigidbody rigidbody;
         private float velocity = 0;
 
+        public StackController StackController => stackController;
         public Animator Animator => animator;
         public float Velocity => velocity;
 
         private void Awake()
         {
             rigidbody = GetComponent<Rigidbody>();
-        }
-
-        public void Init()
-        {
-            
         }
 
         public void Move(Vector2 direction)

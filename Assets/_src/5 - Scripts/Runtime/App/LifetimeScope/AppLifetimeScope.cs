@@ -2,6 +2,7 @@
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
+using YohohoChobotov.Services;
 using YohohoChobotov.Services.Levels;
 
 namespace YohohoChobotov.App
@@ -56,6 +57,12 @@ namespace YohohoChobotov.App
 
             Debug.Log($"System : Register {nameof(LevelService)}");
             builder.Register<ILevelService, LevelService>(Lifetime.Singleton);
+
+            Debug.Log($"System : Register {nameof(ScoreService)}");
+            builder.Register<IScoreService, ScoreService>(Lifetime.Singleton);
+
+            Debug.Log($"System : Register {nameof(StackService)}");
+            builder.Register<IStackService, StackService>(Lifetime.Singleton);
 
             Debug.Log($"System : End Register Services");
         }

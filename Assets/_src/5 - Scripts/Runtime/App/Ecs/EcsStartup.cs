@@ -17,20 +17,21 @@ namespace YohohoChobotov.App
         private readonly GameLogic gameLogic;
         private readonly FixedJoystick joystick;
 
-        public EcsWorld World => world;
-
-        public EcsStartup(
-            GameLogic gameLogic,
-            FixedJoystick joystick)
+        public EcsStartup(GameLogic gameLogic, FixedJoystick joystick)
         {
             this.gameLogic = gameLogic;
             this.joystick = joystick;
-            
+
             world = new EcsWorld();
 
             InitUpdateEcs();
             InitFixedUpdateEcs();
             InitLateUpdateEcs();
+        }
+
+        public void CreateEntity<T>(in T component) where T : struct 
+        {
+            world.NewEntity().Replace(in component);
         }
 
         private void InitUpdateEcs()
@@ -41,7 +42,11 @@ namespace YohohoChobotov.App
                 .Add(new PlayerVelocitySystem())
                 .Add(new PlayerAnimatorSystem())
 
+                .Add(new CreateItemSystem())
+
+                .Inject(gameLogic.LevelFactory)
                 .Inject(gameLogic.PlayerFactory)
+                .Inject(gameLogic.ItemsFactory)
                 .Inject(world)
 
                 .Init();
@@ -88,27 +93,26 @@ namespace YohohoChobotov.App
             lateUpdate?.Run();
         }
 
+        private bool TryDestroySystem(ref EcsSystems systems)
+        {
+            if (systems != null)
+            {
+                systems.Destroy();
+                systems = null;
+
+                return true;
+            }
+
+            return false;
+        }
+
         public void Dispose()
         {
-            if (update != null) 
-            {
-                update.Destroy();
-                update = null;
-            }
+            TryDestroySystem(ref update);
+            TryDestroySystem(ref fixedUpdate);
+            TryDestroySystem(ref lateUpdate);
 
-            if (fixedUpdate != null) 
-            {
-                fixedUpdate.Destroy();
-                fixedUpdate = null;
-            }
-
-            if (lateUpdate != null) 
-            {
-                lateUpdate.Destroy();
-                lateUpdate = null;
-            }
-
-            world.Destroy ();
+            world.Destroy();
             world = null;
         }
     }

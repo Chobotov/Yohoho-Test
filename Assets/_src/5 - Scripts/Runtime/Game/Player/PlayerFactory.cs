@@ -1,29 +1,32 @@
 ﻿using UnityEngine;
 using VContainer;
+using VContainer.Unity;
 using YohohoChobotov.Configs.Player;
 
 namespace YohohoChobotov.Game.Player
 {
     public class PlayerFactory : MonoBehaviour
     {
-        private PlayerConfig config;
+        private IObjectResolver resolver;
 
+        private PlayerConfig config;
         private PlayerController player;
 
         public PlayerController Player => player;
 
         [Inject]
-        public void Inject(PlayerConfig config)
+        public void Inject(IObjectResolver resolver, PlayerConfig config)
         {
+            this.resolver = resolver;
             this.config = config;
         }
 
         public void CreatePlayer(Vector3 spawnPos)
         {
-            player = Instantiate(
-                config.PlayerPrefab, 
-                spawnPos, 
-                Quaternion.identity, 
+            player = resolver.Instantiate(
+                config.PlayerPrefab,
+                spawnPos,
+                Quaternion.identity,
                 transform);
         }
     }

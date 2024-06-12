@@ -17,8 +17,6 @@ namespace YohohoChobotov.Ecs.Systems
             var player = factory.Player;
 
             player.Animator.SetFloat(VelocityKey, player.Velocity);
-
-            Debug.Log(player.Velocity);
         }
     }
 }
