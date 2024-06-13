@@ -20,11 +20,11 @@ namespace YohohoChobotov.Game.Stack
             this.stackService = stackService;
         }
 
-        private void Add(ItemController item)
+        public void Add(ItemController item)
         {
             stackService.Add(item.Info);
 
-            if (items.Count >= stackService.GetMaxCount())
+            if (!CanAddItem())
             {
                 return;
             }
@@ -37,7 +37,7 @@ namespace YohohoChobotov.Game.Stack
             itemTransform.localPosition = new Vector3(0, item.Render.localScale.y, 0) * items.Count;
         }
 
-        private void RemoveLast()
+        public void RemoveLast()
         {
             stackService.RemoveLast(count: 1);
 
@@ -58,12 +58,9 @@ namespace YohohoChobotov.Game.Stack
             stackService.Clear();
         }
 
-        private void OnTriggerEnter(Collider other)
+        public bool CanAddItem()
         {
-            if (other.TryGetComponent<ItemController>(out var item))
-            {
-                Add(item);
-            }
+            return items.Count < stackService.GetMaxCount();
         }
     }
 }

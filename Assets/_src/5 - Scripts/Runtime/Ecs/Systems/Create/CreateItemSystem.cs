@@ -1,7 +1,7 @@
 ﻿using Leopotam.Ecs;
 using UnityEngine;
-using YohohoChobotov.Game.Items;
-using YohohoChobotov.Game.Levels;
+using YohohoChobotov.Ecs.Components;
+using YohohoChobotov.Game;
 
 namespace YohohoChobotov.Ecs.Systems
 {
@@ -10,8 +10,7 @@ namespace YohohoChobotov.Ecs.Systems
         private const float CreatePeriod = 3f;
 
         private EcsWorld world;
-        private ItemsFactory factory;
-        private LevelFactory levelFactory;
+        private GameState state;
 
         private float time = 0;
 
@@ -22,7 +21,10 @@ namespace YohohoChobotov.Ecs.Systems
                 time = 0;
 
                 var position = GetRandomPosition();
-                factory.CreateRandomItem(position);
+                var item = state.ItemsFactory.CreateRandomItem(position);
+
+                var entity = world.NewEntity();
+                entity.Get<ItemComponent>().Item = item;
             }
 
             time += Time.deltaTime;
@@ -30,7 +32,7 @@ namespace YohohoChobotov.Ecs.Systems
 
         private Vector3 GetRandomPosition()
         {
-            var collider = levelFactory.LevelField.BoxCollider;
+            var collider = state.LevelFactory.LevelField.BoxCollider;
 
             var colliderBounds = collider.bounds;
             var colliderCenter = colliderBounds.center;

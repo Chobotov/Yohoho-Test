@@ -6,7 +6,7 @@ using YohohoChobotov.Game.Player;
 
 namespace YohohoChobotov.Game
 {
-    public class GameLogic : MonoBehaviour
+    public class GameState : MonoBehaviour
     {
         [SerializeField] private CinemachineVirtualCamera camera;
         [Header("Factories")]
@@ -14,31 +14,9 @@ namespace YohohoChobotov.Game
         [SerializeField] private PlayerFactory playerFactory;
         [SerializeField] private ItemsFactory itemsFactory;
 
+        public CinemachineVirtualCamera Camera => camera;
         public ItemsFactory ItemsFactory => itemsFactory;
         public LevelFactory LevelFactory => levelFactory;
         public PlayerFactory PlayerFactory => playerFactory;
-
-        private void Start()
-        {
-            CreateLevel();
-            CreatePlayer();
-
-            SetCameraFollow(playerFactory.Player.transform);
-        }
-
-        private void CreatePlayer()
-        {
-            playerFactory.CreatePlayer(levelFactory.LevelField.StartPoint.position);
-        }
-
-        private void CreateLevel()
-        {
-            levelFactory.CreateLevelField();
-        }
-
-        private void SetCameraFollow(Transform follow)
-        {
-            camera.Follow = follow;
-        }
     }
 }

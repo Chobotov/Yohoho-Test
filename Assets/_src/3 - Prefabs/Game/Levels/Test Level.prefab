@@ -105,7 +105,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 10, y: 4, z: 10}
-  m_Center: {x: 0, y: 2, z: 0}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &3451009473766467674
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -312,6 +312,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startPoint: {fileID: 1491185436533165408}
   boxCollider: {fileID: 8968406843129456048}
+  dropZone: {fileID: 2930821105700606436}
 --- !u!1 &6096157860254364184
 GameObject:
   m_ObjectHideFlags: 0

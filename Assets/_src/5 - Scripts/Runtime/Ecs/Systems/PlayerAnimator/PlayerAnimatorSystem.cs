@@ -1,6 +1,6 @@
 ﻿using Leopotam.Ecs;
 using UnityEngine;
-using YohohoChobotov.Game.Player;
+using YohohoChobotov.Ecs.Components;
 
 namespace YohohoChobotov.Ecs.Systems
 {
@@ -8,15 +8,18 @@ namespace YohohoChobotov.Ecs.Systems
     {
         private readonly int VelocityKey = Animator.StringToHash("velocity");
 
-        private PlayerFactory factory;
+        private readonly EcsFilter<PlayerComponent> filter;
 
         public void Run()
         {
-            if (!factory.Player) return;
+            foreach (var i in filter)
+            {
+                ref var entity = ref filter.Get1(i);
 
-            var player = factory.Player;
+                var player = entity.Player;
 
-            player.Animator.SetFloat(VelocityKey, player.Velocity);
+                player.Animator.SetFloat(VelocityKey, player.Velocity);
+            }
         }
     }
 }

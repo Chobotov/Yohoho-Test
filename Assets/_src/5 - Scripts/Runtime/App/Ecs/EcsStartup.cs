@@ -3,6 +3,7 @@ using Leopotam.Ecs;
 using VContainer.Unity;
 using YohohoChobotov.Ecs.Systems;
 using YohohoChobotov.Game;
+using YohohoChobotov.Services;
 
 namespace YohohoChobotov.App
 {
@@ -14,12 +15,18 @@ namespace YohohoChobotov.App
         private EcsSystems fixedUpdate;
         private EcsSystems lateUpdate;
 
-        private readonly GameLogic gameLogic;
+        private readonly IScoreService scoreService;
+
+        private readonly GameState gameState;
         private readonly FixedJoystick joystick;
 
-        public EcsStartup(GameLogic gameLogic, FixedJoystick joystick)
+        public EcsStartup(
+            IScoreService scoreService,
+            GameState gameState,
+            FixedJoystick joystick)
         {
-            this.gameLogic = gameLogic;
+            this.scoreService = scoreService;
+            this.gameState = gameState;
             this.joystick = joystick;
 
             world = new EcsWorld();
@@ -29,25 +36,22 @@ namespace YohohoChobotov.App
             InitLateUpdateEcs();
         }
 
-        public void CreateEntity<T>(in T component) where T : struct 
-        {
-            world.NewEntity().Replace(in component);
-        }
-
         private void InitUpdateEcs()
         {
             update = new EcsSystems(world);
 
             update
+                .Add(new CreateLevelSystem())
+                .Add(new CreatePlayerSystem())
+                .Add(new CameraInitSystem())
+                
                 .Add(new PlayerVelocitySystem())
                 .Add(new PlayerAnimatorSystem())
 
                 .Add(new CreateItemSystem())
 
-                .Inject(gameLogic.LevelFactory)
-                .Inject(gameLogic.PlayerFactory)
-                .Inject(gameLogic.ItemsFactory)
                 .Inject(world)
+                .Inject(gameState)
 
                 .Init();
         }
@@ -57,12 +61,12 @@ namespace YohohoChobotov.App
             fixedUpdate = new EcsSystems(world);
 
             fixedUpdate
-                .Add(new InputSystem())
+                .Add(new PlayerInputSystem())
                 .Add(new RotationSystem())
                 .Add(new MoveSystem())
 
-                .Inject(gameLogic.PlayerFactory)
                 .Inject(world)
+                .Inject(gameState)
                 .Inject(joystick)
 
                 .Init();
@@ -73,7 +77,14 @@ namespace YohohoChobotov.App
             lateUpdate = new EcsSystems(world);
 
             lateUpdate
-                .Add(new InputClearSystem())
+                .Add(new PickupItemDistanceSystem())
+                .Add(new PickupItemSystem())
+                .Add(new DropZoneDistanceSystem())
+                .Add(new DropItemSystem())
+
+                .Inject(world)
+                .Inject(gameState)
+                .Inject(scoreService)
 
                 .Init();
         }

@@ -21,11 +21,13 @@ namespace YohohoChobotov.Game.Levels
             this.service = service;
         }
 
-        public void CreateLevelField()
+        public LevelController CreateLevelField()
         {
             var field = service.GetLevelField();
 
             levelField = resolver.Instantiate(field, transform);
+
+            return levelField;
         }
 
         public void ClearField()

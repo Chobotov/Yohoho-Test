@@ -1,24 +1,21 @@
 ﻿using Leopotam.Ecs;
+using YohohoChobotov.Ecs.Components;
 using YohohoChobotov.Ecs.Input;
-using YohohoChobotov.Game.Player;
 
 namespace YohohoChobotov.Ecs.Systems
 {
     public class MoveSystem : IEcsRunSystem
     {
-        private readonly EcsFilter<InputEvent> filter;
-
-        private PlayerFactory factory;
+        private readonly EcsFilter<PlayerComponent, InputEvent> filter;
 
         public void Run()
         {
-            if (!factory.Player) return;
-
             foreach (var i in filter)
             {
-                ref var input = ref filter.Get1(i);
+                ref var playerEntity = ref filter.Get1(i);
+                ref var input = ref filter.Get2(i);
 
-                factory.Player.Move(input.Direction);
+                playerEntity.Player.Move(input.Direction);
             }
         }
     }

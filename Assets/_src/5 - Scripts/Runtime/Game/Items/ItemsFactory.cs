@@ -16,12 +16,14 @@ namespace YohohoChobotov.Game.Items
             this.config = config;
         }
 
-        public void CreateRandomItem(Vector3 position)
+        public ItemController CreateRandomItem(Vector3 position)
         {
             var itemPrefab = config.Items.GetRandomItem();
             var item = Instantiate(itemPrefab, position, Quaternion.identity, transform);
 
             item.Init(new ItemInfo());
+
+            return item;
         }
     }
 }

@@ -21,13 +21,15 @@ namespace YohohoChobotov.Game.Player
             this.config = config;
         }
 
-        public void CreatePlayer(Vector3 spawnPos)
+        public PlayerController CreatePlayer(Vector3 spawnPos)
         {
             player = resolver.Instantiate(
                 config.PlayerPrefab,
                 spawnPos,
                 Quaternion.identity,
                 transform);
+
+            return player;
         }
     }
 }
