@@ -1,4 +1,4 @@
-# «Тестовое Unity Developer»
+# «Idle Game»
 
 Ссылка на сделанный проект : [Apk](https://goo.su/2B1OG)
 
