@@ -4,6 +4,6 @@ namespace YohohoChobotov.Ecs.Components
 {
     public struct LevelComponent
     {
-        public LevelController Level { get; set; }
+        public LevelView Level { get; set; }
     }
 }

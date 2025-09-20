@@ -1,4 +1,5 @@
 ﻿using Leopotam.Ecs;
+using UnityEngine;
 using YohohoChobotov.Ecs.Components;
 using YohohoChobotov.Game;
 
@@ -11,8 +12,7 @@ namespace YohohoChobotov.Ecs.Systems
 
         public void Init()
         {
-            var level = state.LevelFactory.CreateLevelField();;
-
+            var level = state.LevelFactory.Create(Vector3.zero);
             var newEntity = world.NewEntity();
 
             newEntity.Get<LevelComponent>().Level = level;

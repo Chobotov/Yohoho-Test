@@ -6,7 +6,7 @@ namespace YohohoChobotov.Ecs.Systems
 {
     public class DropZoneDistanceSystem : IEcsRunSystem
     {
-        private readonly EcsFilter<PlayerComponent, StackComponent> playerFilter;
+        private readonly EcsFilter<UnitComponent, InventoryComponent> playerFilter;
         private readonly EcsFilter<LevelComponent> levelFilter;
 
         private EcsWorld world;
@@ -25,7 +25,7 @@ namespace YohohoChobotov.Ecs.Systems
                     ref var player = ref playerFilter.Get1(ii);
                     ref var stack = ref playerFilter.Get2(ii);
 
-                    var playerPosition = player.Player.transform.position;
+                    var playerPosition = player.Unit.transform.position;
 
                     if (IsInsideBox(playerPosition, dropZone) && !stack.IsEmpty)
                     {
@@ -46,9 +46,11 @@ namespace YohohoChobotov.Ecs.Systems
 
             if (marginIsWorld && box.transform.lossyScale != Vector3.one)
             {
-                var pointPlusX = box.transform.InverseTransformPoint(point + box.transform.right);
-                var pointPlusY = box.transform.InverseTransformPoint(point + box.transform.up);
-                var pointPlusZ = box.transform.InverseTransformPoint(point + box.transform.forward);
+                var boxTransform = box.transform;
+
+                var pointPlusX = box.transform.InverseTransformPoint(point + boxTransform.right);
+                var pointPlusY = box.transform.InverseTransformPoint(point + boxTransform.up);
+                var pointPlusZ = box.transform.InverseTransformPoint(point + boxTransform.forward);
 
                 margin.x *= Vector3.Distance(localPos, pointPlusX);
                 margin.y *= Vector3.Distance(localPos, pointPlusY);

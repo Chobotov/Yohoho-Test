@@ -1,12 +1,11 @@
 ﻿using UnityEngine;
 using VContainer;
 using YohohoChobotov.Configs.Items;
-using YohohoChobotov.Services;
 using YohohoChobotov.Utills;
 
 namespace YohohoChobotov.Game.Items
 {
-    public class ItemsFactory : MonoBehaviour
+    public class ItemsFactory : IFactory<Item>
     {
         private ItemsConfig config;
 
@@ -16,12 +15,10 @@ namespace YohohoChobotov.Game.Items
             this.config = config;
         }
 
-        public ItemController CreateRandomItem(Vector3 position)
+        public Item Create(Vector3 position)
         {
             var itemPrefab = config.Items.GetRandomItem();
-            var item = Instantiate(itemPrefab, position, Quaternion.identity, transform);
-
-            item.Init(new ItemInfo());
+            var item = Object.Instantiate(itemPrefab, position, Quaternion.identity);
 
             return item;
         }

@@ -12,13 +12,11 @@ namespace YohohoChobotov.UI
         [SerializeField] private TextMeshProUGUI score;
 
         private IScoreService scoreService;
-        private IStackService stackService;
 
         [Inject]
-        public void Inject(IScoreService scoreService, IStackService stackService)
+        public void Inject(IScoreService scoreService)
         {
             this.scoreService = scoreService;
-            this.stackService = stackService;
 
             InitSubs();
         }
@@ -28,16 +26,11 @@ namespace YohohoChobotov.UI
             scoreService.Score
                 .Subscribe(SetScore)
                 .AddTo(this);
-
-            stackService.Items
-                .ObserveCountChanged(notifyCurrentCount: true)
-                .Subscribe(SetStackCount)
-                .AddTo(this);
         }
 
         private void SetStackCount(int count)
         {
-            stackCount.text = $"{count}/{stackService.GetMaxCount()}";
+            stackCount.text = $"{count}/";
         }
 
         private void SetScore(int count)

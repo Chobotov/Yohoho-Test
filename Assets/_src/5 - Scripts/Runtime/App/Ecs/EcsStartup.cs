@@ -7,13 +7,12 @@ using YohohoChobotov.Services;
 
 namespace YohohoChobotov.App
 {
-    public class EcsStartup : ITickable, IFixedTickable, ILateTickable, IDisposable
+    public class EcsStartup : ITickable, IFixedTickable, IDisposable
     {
         private EcsWorld world;
 
         private EcsSystems update;
         private EcsSystems fixedUpdate;
-        private EcsSystems lateUpdate;
 
         private readonly IScoreService scoreService;
 
@@ -33,7 +32,6 @@ namespace YohohoChobotov.App
 
             InitUpdateEcs();
             InitFixedUpdateEcs();
-            InitLateUpdateEcs();
         }
 
         private void InitUpdateEcs()
@@ -42,16 +40,22 @@ namespace YohohoChobotov.App
 
             update
                 .Add(new CreateLevelSystem())
-                .Add(new CreatePlayerSystem())
+                .Add(new CreateUnitSystem())
                 .Add(new CameraInitSystem())
-                
-                .Add(new PlayerVelocitySystem())
-                .Add(new PlayerAnimatorSystem())
+
+                .Add(new MoveVelocitySystem())
+                .Add(new AnimatorSystem())
 
                 .Add(new CreateItemSystem())
 
+                .Add(new PickupItemDistanceSystem())
+                .Add(new PickupItemSystem())
+                .Add(new DropZoneDistanceSystem())
+                .Add(new DropItemSystem())
+
                 .Inject(world)
                 .Inject(gameState)
+                .Inject(scoreService)
 
                 .Init();
         }
@@ -61,30 +65,13 @@ namespace YohohoChobotov.App
             fixedUpdate = new EcsSystems(world);
 
             fixedUpdate
-                .Add(new PlayerInputSystem())
+                .Add(new InputSystem())
                 .Add(new RotationSystem())
                 .Add(new MoveSystem())
 
                 .Inject(world)
                 .Inject(gameState)
                 .Inject(joystick)
-
-                .Init();
-        }
-
-        private void InitLateUpdateEcs()
-        {
-            lateUpdate = new EcsSystems(world);
-
-            lateUpdate
-                .Add(new PickupItemDistanceSystem())
-                .Add(new PickupItemSystem())
-                .Add(new DropZoneDistanceSystem())
-                .Add(new DropItemSystem())
-
-                .Inject(world)
-                .Inject(gameState)
-                .Inject(scoreService)
 
                 .Init();
         }
@@ -99,29 +86,16 @@ namespace YohohoChobotov.App
             fixedUpdate?.Run();
         }
 
-        public void LateTick()
+        private void DestroySystem(ref EcsSystems systems)
         {
-            lateUpdate?.Run();
-        }
-
-        private bool TryDestroySystem(ref EcsSystems systems)
-        {
-            if (systems != null)
-            {
-                systems.Destroy();
-                systems = null;
-
-                return true;
-            }
-
-            return false;
+            systems.Destroy();
+            systems = null;
         }
 
         public void Dispose()
         {
-            TryDestroySystem(ref update);
-            TryDestroySystem(ref fixedUpdate);
-            TryDestroySystem(ref lateUpdate);
+            DestroySystem(ref update);
+            DestroySystem(ref fixedUpdate);
 
             world.Destroy();
             world = null;

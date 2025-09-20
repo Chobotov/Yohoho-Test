@@ -2,6 +2,10 @@
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
+using YohohoChobotov.Game;
+using YohohoChobotov.Game.Items;
+using YohohoChobotov.Game.Levels;
+using YohohoChobotov.Game.Player;
 
 namespace YohohoChobotov.App
 {
@@ -12,22 +16,24 @@ namespace YohohoChobotov.App
         protected override void Configure(IContainerBuilder builder)
         {
             RegisterControllers(builder);
+            RegisterFactories(builder);
+
+            builder.RegisterEntryPoint<EcsStartup>().AsSelf();
         }
 
         private void RegisterControllers(IContainerBuilder builder)
         {
-            Debug.Log($"Game : Start Register Controllers");
-
             foreach (var controller in controllers) 
             {
-                Debug.Log($"Register : {controller.name}");
-
                 builder.RegisterInstance(controller).AsSelf();
             }
+        }
 
-            builder.RegisterEntryPoint<EcsStartup>().AsSelf();
-
-            Debug.Log($"Game : End Register Controllers");
+        private static void RegisterFactories(IContainerBuilder builder)
+        {
+            builder.Register<IFactory<LevelView>, LevelFactory>(Lifetime.Scoped);
+            builder.Register<IFactory<UnitView>,PlayerFactory>(Lifetime.Scoped);
+            builder.Register<IFactory<Item>, ItemsFactory>(Lifetime.Scoped);
         }
     }
 }

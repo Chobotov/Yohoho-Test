@@ -1,5 +1,6 @@
 ﻿using Cinemachine;
 using UnityEngine;
+using VContainer;
 using YohohoChobotov.Game.Items;
 using YohohoChobotov.Game.Levels;
 using YohohoChobotov.Game.Player;
@@ -9,14 +10,15 @@ namespace YohohoChobotov.Game
     public class GameState : MonoBehaviour
     {
         [SerializeField] private CinemachineVirtualCamera camera;
-        [Header("Factories")]
-        [SerializeField] private LevelFactory levelFactory;
-        [SerializeField] private PlayerFactory playerFactory;
-        [SerializeField] private ItemsFactory itemsFactory;
+
+        [Inject] private IFactory<LevelView> levelFactory;
+        [Inject] private IFactory<UnitView> playerFactory;
+        [Inject] private IFactory<Item> itemsFactory;
 
         public CinemachineVirtualCamera Camera => camera;
-        public ItemsFactory ItemsFactory => itemsFactory;
-        public LevelFactory LevelFactory => levelFactory;
-        public PlayerFactory PlayerFactory => playerFactory;
+
+        public IFactory<Item> ItemsFactory => itemsFactory;
+        public IFactory<LevelView> LevelFactory => levelFactory;
+        public IFactory<UnitView> PlayerFactory => playerFactory;
     }
 }

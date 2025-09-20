@@ -5,14 +5,12 @@ using YohohoChobotov.Configs.Player;
 
 namespace YohohoChobotov.Game.Player
 {
-    public class PlayerFactory : MonoBehaviour
+    public class PlayerFactory : IFactory<UnitView>
     {
         private IObjectResolver resolver;
 
         private PlayerConfig config;
-        private PlayerController player;
-
-        public PlayerController Player => player;
+        private UnitView unit;
 
         [Inject]
         public void Inject(IObjectResolver resolver, PlayerConfig config)
@@ -21,15 +19,14 @@ namespace YohohoChobotov.Game.Player
             this.config = config;
         }
 
-        public PlayerController CreatePlayer(Vector3 spawnPos)
+        public UnitView Create(Vector3 spawnPos)
         {
-            player = resolver.Instantiate(
-                config.PlayerPrefab,
+            unit = resolver.Instantiate(
+                config.UnitPrefab,
                 spawnPos,
-                Quaternion.identity,
-                transform);
+                Quaternion.identity);
 
-            return player;
+            return unit;
         }
     }
 }

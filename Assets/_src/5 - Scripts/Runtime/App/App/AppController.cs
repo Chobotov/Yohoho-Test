@@ -4,12 +4,7 @@ using UnityEngine.SceneManagement;
 
 namespace YohohoChobotov.App
 {
-    /// <summary>
-    /// Единая точка входа в проект
-    /// Отсюда начинается инициализация необходимых модулей/сервисов и т.д.
-    /// Загрузка начальной сцены и/или экрана
-    /// </summary>
-    public sealed class AppController : MonoBehaviour, IAppController
+    public sealed class AppController : MonoBehaviour
     {
         [SerializeField] private AppLifetimeScope gameScope;
 
@@ -20,35 +15,24 @@ namespace YohohoChobotov.App
 
         private async void Start()
         {
-            Debug.Log($"System : Start Init");
-
             await InitGame();
-
-            Debug.Log($"System : End Init");
-
-            await LoadGameScene();
 
             LaunchGame();
         }
 
-        public async UniTask InitGame()
+        private async UniTask InitGame()
         {
             gameScope.Build();
         }
 
-        public void LaunchGame()
+        private void LaunchGame()
         {
-            LoadGameScene();
+            SceneManager.LoadScene("Game", LoadSceneMode.Single);
         }
 
         public void Quit()
         {
             Application.Quit();
-        }
-
-        private async UniTask LoadGameScene()
-        {
-            SceneManager.LoadScene("Game", LoadSceneMode.Single);
         }
     }
 }

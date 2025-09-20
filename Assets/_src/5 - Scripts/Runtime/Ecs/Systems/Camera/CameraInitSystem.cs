@@ -6,7 +6,7 @@ namespace YohohoChobotov.Ecs.Systems
 {
     public class CameraInitSystem : IEcsRunSystem
     {
-        private readonly EcsFilter<PlayerComponent> filter;
+        private readonly EcsFilter<UnitComponent> filter;
 
         private GameState state;
 
@@ -14,8 +14,8 @@ namespace YohohoChobotov.Ecs.Systems
         {
             foreach (var i in filter)
             {
-                ref var player = ref filter.Get1(i);
-                state.Camera.Follow = player.Player.transform;
+                ref var component = ref filter.Get1(i);
+                state.Camera.Follow = component.Unit.transform;
             }
         }
     }

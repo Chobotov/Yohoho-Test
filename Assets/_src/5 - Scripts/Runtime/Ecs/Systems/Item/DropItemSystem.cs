@@ -6,7 +6,7 @@ namespace YohohoChobotov.Ecs.Systems
 {
     public class DropItemSystem : IEcsRunSystem
     {
-        private readonly EcsFilter<PlayerComponent, StackComponent, DropComponent> filter;
+        private readonly EcsFilter<InventoryComponent, DropComponent> filter;
 
         private IScoreService scoreService;
         private EcsWorld world;
@@ -16,11 +16,14 @@ namespace YohohoChobotov.Ecs.Systems
             foreach (var i in filter)
             {
                 ref var entity = ref filter.GetEntity(i);
-                ref var stack = ref filter.Get2(i);
+                ref var stack = ref filter.Get1(i);
 
-                stack.Remove();
+                if (!stack.IsEmpty)
+                {
+                    stack.Stack.RemoveLast();
 
-                scoreService.SetScore(scoreService.Score.Value + 1);
+                    scoreService.SetScore(scoreService.Score.Value + 1);
+                }
 
                 entity.Del<DropComponent>();
             }

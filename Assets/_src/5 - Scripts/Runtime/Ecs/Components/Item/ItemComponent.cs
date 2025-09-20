@@ -4,7 +4,7 @@ namespace YohohoChobotov.Ecs.Components
 {
     public struct ItemComponent
     {
-        public ItemController Item { get; set; }
+        public Item Item { get; set; }
         public bool IsTaken { get; set; }
     }
 }

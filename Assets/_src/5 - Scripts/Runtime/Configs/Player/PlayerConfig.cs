@@ -4,10 +4,10 @@ using UnityEngine;
 namespace YohohoChobotov.Configs.Player
 {
     [CreateAssetMenu(fileName = "Player Config", menuName = "Game/Configs/Player Config", order = 0)]
-    public class PlayerConfig : ScriptableObject
+    public class PlayerConfig : Config
     {
-        [SerializeField] private PlayerController playerPrefab;
+        [SerializeField] private UnitView unitPrefab;
 
-        public PlayerController PlayerPrefab => playerPrefab;
+        public UnitView UnitPrefab => unitPrefab;
     }
 }

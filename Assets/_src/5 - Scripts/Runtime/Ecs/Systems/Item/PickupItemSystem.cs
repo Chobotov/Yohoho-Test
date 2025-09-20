@@ -5,7 +5,7 @@ namespace YohohoChobotov.Ecs.Systems
 {
     public class PickupItemSystem : IEcsRunSystem
     {
-        private readonly EcsFilter<PlayerComponent, PickupComponent> filter;
+        private readonly EcsFilter<UnitComponent, PickupComponent> filter;
 
         private EcsWorld world;
 
@@ -15,12 +15,15 @@ namespace YohohoChobotov.Ecs.Systems
             {
                 ref var entity = ref filter.GetEntity(i);
 
-                ref var stack = ref entity.Get<StackComponent>();
+                ref var stack = ref entity.Get<InventoryComponent>();
                 ref var itemPickup = ref filter.Get2(i);
 
-                stack.Stack.Add(itemPickup.Item.Item);
-                stack.Items.Add(itemPickup.Item);
+                var itemPickupItem = itemPickup.Item;
 
+                stack.Stack.Add(itemPickupItem.Item);
+                stack.Items.Add(itemPickupItem);
+
+                itemPickupItem.IsTaken = true;
                 entity.Del<PickupComponent>();
             }
         }

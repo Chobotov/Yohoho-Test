@@ -4,8 +4,6 @@ namespace YohohoChobotov.Services.Levels
 {
     public interface ILevelService
     {
-        int CurrentLevel { get; }
-
-        LevelController GetLevelField();
+        LevelView GetLevelField();
     }
 }

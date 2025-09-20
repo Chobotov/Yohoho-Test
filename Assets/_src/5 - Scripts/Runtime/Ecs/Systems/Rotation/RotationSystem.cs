@@ -6,16 +6,16 @@ namespace YohohoChobotov.Ecs.Systems
 {
     public class RotationSystem : IEcsRunSystem
     {
-        private readonly EcsFilter<PlayerComponent, InputEvent> filter;
+        private readonly EcsFilter<RotationComponent, InputEvent> filter;
 
         public void Run()
         {
             foreach (var i in filter)
             {
-                ref var playerEntity = ref filter.Get1(i);
+                ref var component = ref filter.Get1(i);
                 ref var input = ref filter.Get2(i);
 
-                playerEntity.Player.Rotation(input.Direction);
+                component.Rotation.Rotate(input.Direction);
             }
         }
     }

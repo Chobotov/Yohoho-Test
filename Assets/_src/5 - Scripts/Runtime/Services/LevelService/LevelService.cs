@@ -14,7 +14,7 @@ namespace YohohoChobotov.Services.Levels
             this.config = config;
         }
 
-        public LevelController GetLevelField()
+        public LevelView GetLevelField()
         {
             return config.GetLevelField(CurrentLevel);
         }

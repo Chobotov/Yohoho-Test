@@ -1,9 +1,9 @@
-﻿using UnityEngine;
+﻿using YohohoChobotov.Game.Player;
 
 namespace YohohoChobotov.Ecs.Components
 {
     public struct MoveComponent
     {
-        public Transform Transform { get; set; }
+        public Moveble Moveble { get; set; }
     }
 }

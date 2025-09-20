@@ -8,7 +8,7 @@ namespace YohohoChobotov.Ecs.Systems
     {
         private const float PickupDistance = 1f;
 
-        private readonly EcsFilter<PlayerComponent, StackComponent> playerFilter;
+        private readonly EcsFilter<UnitComponent, InventoryComponent> playerFilter;
         private readonly EcsFilter<ItemComponent> itemFilter;
 
         private EcsWorld world;
@@ -21,7 +21,7 @@ namespace YohohoChobotov.Ecs.Systems
                 ref var playerComponent = ref playerFilter.Get1(i);
                 ref var stackComponent = ref playerFilter.Get2(i);
 
-                var playerController = playerComponent.Player;
+                var playerController = playerComponent.Unit;
 
                 foreach (var ii in itemFilter)
                 {
@@ -36,7 +36,6 @@ namespace YohohoChobotov.Ecs.Systems
                     if (canPickup && stackComponent.Stack.CanAddItem())
                     {
                         entity.Get<PickupComponent>().Item = itemEntity;
-                        itemEntity.IsTaken = true;
                     }
                 }
             }

@@ -5,14 +5,12 @@ using YohohoChobotov.Services.Levels;
 
 namespace YohohoChobotov.Game.Levels
 {
-    public class LevelFactory : MonoBehaviour
+    public class LevelFactory : IFactory<LevelView>
     {
         private ILevelService service;
         private IObjectResolver resolver;
 
-        private LevelController levelField;
-
-        public LevelController LevelField => levelField;
+        private LevelView levelField;
 
         [Inject]
         public void Inject(IObjectResolver resolver, ILevelService service)
@@ -21,18 +19,13 @@ namespace YohohoChobotov.Game.Levels
             this.service = service;
         }
 
-        public LevelController CreateLevelField()
+        public LevelView Create(Vector3 position)
         {
             var field = service.GetLevelField();
 
-            levelField = resolver.Instantiate(field, transform);
+            levelField = resolver.Instantiate(field);
 
             return levelField;
-        }
-
-        public void ClearField()
-        {
-            Destroy(levelField.gameObject);
         }
     }
 }
